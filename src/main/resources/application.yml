@@ -1,0 +1,11 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://175.178.69.145:3306/code_sheep
+    username: www
+    password: 331137142
+
+codeWork:
+  path: '/home/mosquito/Code/temp/'
