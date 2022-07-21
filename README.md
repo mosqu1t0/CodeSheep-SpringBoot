@@ -12,7 +12,7 @@ Btw, i hate java.
 #### Post: `/code`
 emm, it is for running code.
 
-it needs two <b>params</b>:
+it needs three <b>params</b>:
 - lang(language)
 - code(just codes)
 - input(the args of program)
