@@ -32,8 +32,10 @@ example:
     > means the codes you posted have been perfectly executed.
 - `233`
     > means the codes you posted have been executed, but killed by script due to some reasons(eg: long loop)
-- `204`
+- `244`
     > means the codes you posted have some grammar problems so that it can't be compiled well.
+- `555`
+    > dangerous thing happen holy shit, please contact me.
 
 ##### msg
 `msg` is corresponded to the `code`

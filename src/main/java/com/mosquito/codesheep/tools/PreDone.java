@@ -1,6 +1,7 @@
 package com.mosquito.codesheep.tools;
 
-import lombok.Getter;
+import cn.hutool.core.io.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -9,6 +10,7 @@ import java.io.*;
 
 
 @Component
+@Slf4j
 public class PreDone {
     static String CodeWorkPath;
 
@@ -18,28 +20,26 @@ public class PreDone {
     }
 
     public static void addShToWorkPath(){
-        File path = null;
+        File sourcePath;
         try {
-            path = ResourceUtils.getFile("classpath:sh");
+            sourcePath = ResourceUtils.getFile("classpath:sh");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        File[] tempList = path.listFiles();
+        File[] tempList = sourcePath.listFiles();
+        File path = new File(CodeWorkPath);
+        if (!path.exists()) FileUtil.mkdir(path);
 
-        for (int i = 0 ; i < tempList.length ; i ++){
-            if (tempList[i].isFile()) {
-                String fileName = tempList[i].getName();
+        for (File file : tempList != null ? tempList : new File[0]) {
+            if (file.isFile()) {
+                String fileName = file.getName();
                 try {
                     File sh = new File(CodeWorkPath + fileName);
-                    System.out.println(CodeWorkPath);
-                    FileInputStream fileInputStream = new FileInputStream(tempList[i]);
-                    FileOutputStream fileOutputStream = new FileOutputStream(sh);
-                    byte[] bytes = new byte[(int) tempList[i].length()];
-                    fileInputStream.read(bytes);
-                    fileOutputStream.write(bytes);
-                    sh.setExecutable(true);
-                    fileOutputStream.close();
-                    fileInputStream.close();
+                    if (sh.exists()) continue;
+                    FileUtil.copyFile(file, sh);
+                    if (!sh.setExecutable(true)){
+                        log.error("The sh {} haven't executable permission", sh.getName());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
