@@ -150,24 +150,23 @@ public class RunCodeService {
             content = new String(Files.readAllBytes(Paths.get(comRes.getPath())));
             if (content.length() > lengthOfOutput) content = content.substring(0, lengthOfOutput);
         }
-        if(comErr.exists() && comErr.length() > 0) {
-            codeResponder.setCode(555);
-            codeResponder.setRes(content);
-            codeResponder.setMsg(wrongMsg);
-            //todo wrong email
-            log.error("Can't kill the programm from {}", id);
-
-            Thread thread = new Thread(new DeleteCodeThread(null, comRes, null, comErr, comExe, id));
-            thread.start();
-
-            return;
-        }
         if (comInfo.exists() && comInfo.length() > 0) {
             String info = new String(Files.readAllBytes(Paths.get(comInfo.getPath())));
             content += info;
-            codeResponder.setCode(233);
-            codeResponder.setRes(content);
-            codeResponder.setMsg(longMsg);
+
+            if (comErr.exists() && comErr.length() > 0){
+                codeResponder.setCode(555);
+                codeResponder.setRes(content);
+                codeResponder.setMsg(wrongMsg);
+                //todo wrong email
+                log.error("Can't kill the programm from {}", id);
+                comCode = null;
+
+            } else {
+                codeResponder.setCode(233);
+                codeResponder.setRes(content);
+                codeResponder.setMsg(longMsg);
+            }
         } else {
             codeResponder.setCode(200);
             codeResponder.setRes(content);
