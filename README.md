@@ -35,7 +35,7 @@ example:
 - `244`
     > means the codes you posted have some grammar problems so that it can't be compiled well.
 - `555`
-    > dangerous thing happen holy shit, please contact me.
+    > dangerous things happen, holy shit, please contact me.
 
 ##### msg
 `msg` is corresponded to the `code`
@@ -43,5 +43,6 @@ example:
 - `Good!`--> `200`
 - `Long time error...` --> `233`
 - `Nop` --> `244`
+- `出问题了，快联系管理员` --> `555`
 ##### res
 the output of your run codes
