@@ -6,6 +6,22 @@ spring:
     url: jdbc:mysql://175.178.69.145:3306/code_sheep
     username: www
     password: 331137142
+  mail:
+    protocol: smtp
+    host: smtp.qq.com
+    port: 465
+    username: xx.hshi@qq.com
+    password: dbgbwpzmhtveebec
+    default-encoding: utf-8
+    properties:
+      mail:
+        debug: true
+
 
 codeWork:
   path: '/home/mosquito/Code/temp/'
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
