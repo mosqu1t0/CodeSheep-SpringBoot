@@ -1,6 +1,6 @@
 package com.mosquito.codesheep;
 
-import com.mosquito.codesheep.tools.PreDone;
+import com.mosquito.codesheep.utils.DoBeforeServe;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,7 +11,7 @@ public class CodeSheepApplication {
         SpringApplication.run(CodeSheepApplication.class, args);
 
          //autostart to copy sh to workpath
-        PreDone.addShToWorkPath();
+        DoBeforeServe.addShToWorkPath();
     }
 
 }

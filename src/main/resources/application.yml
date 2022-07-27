@@ -2,12 +2,12 @@ server:
   port: 8080
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://175.178.69.145:3306/code_sheep
     username: www
     password: 331137142
   mail:
-    protocol: smtp
+    protocol: smtps
     host: smtp.qq.com
     port: 465
     username: xx.hshi@qq.com

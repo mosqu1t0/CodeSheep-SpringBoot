@@ -1,4 +1,4 @@
-package com.mosquito.codesheep.tools;
+package com.mosquito.codesheep.utils;
 
 import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import java.io.*;
 
 @Component
 @Slf4j
-public class PreDone {
+public class DoBeforeServe {
     static String CodeWorkPath;
 
     @Value("${codeWork.path}")
