@@ -5,7 +5,13 @@
     <title>激活账户</title>
 </head>
 <body>
-<h1>hello</h1>
-<a th:href="@{${key}}">aaaaaaaaaaaa</a>
+    <div style="display: block;width: 800px;">
+        <div style="background-color: #24292f; height: 80px; color: white;font-size: 2.5rem;text-align: center;line-height: 80px;">Activate Acount</div>
+        <h1>你好呀，[[${email}]]</h1>
+            <h3>&nbsp;&nbsp;这封邮件用于激活你在 CodeSheep 上注册的账号，在收到邮件的 24h 内，点击以下的链接就能正确激活账号喔! (・∀・)</h3>
+            <a th:href="@{${key}}" style="display: block; width: 200px; height: 60px;margin: auto auto; background-color: #2da44e; font-size: 1.5rem; text-align: center; line-height: 60px; color: white; text-decoration: none">A Button</a>
+        <div style="padding: 1rem;border-top: 1px solid #eaecef;text-align: center;color: #4e6e8e; margin-top: 3rem;font-size: 1rem;">
+            No Licensed | Copyright © 2022-present&nbsp;<a style="text-decoration: none; color: #4f6e8e;" href='https://github.com/mosqu1t0'>mosquito</a></div>
+    </div>
 </body>
 </html>

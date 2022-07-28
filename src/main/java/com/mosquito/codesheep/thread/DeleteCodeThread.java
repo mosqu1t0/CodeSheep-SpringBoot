@@ -1,7 +1,9 @@
 package com.mosquito.codesheep.thread;
 
+import com.mosquito.codesheep.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +38,6 @@ public class DeleteCodeThread implements Runnable{
         if (comExe != null && comExe.exists() && !comExe.delete()) wrongSet.add(comExe);
 
         if (!wrongSet.isEmpty()) {
-            //todo email
             log.error("Can't delete these: {} from {}", wrongSet, id);
         }
     }

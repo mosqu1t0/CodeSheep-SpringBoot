@@ -13,13 +13,22 @@ public class EmailService {
 
     @Value("${spring.mail.username}")
     private String emailFrom;
+    @Value("${bugEmail.receiver}")
+    private String bugEmail;
+    @Value("${doMain}")
+    private String domain;
     @Resource
     private JavaMailSender javaMailSender;
     @Resource
     private TemplateEngine templateEngine;
 
     public void sendMailForActivationAccount(String activationUrl, String email){
-        Thread thread = new Thread(new SendMailThread("activation", emailFrom, javaMailSender, templateEngine, activationUrl, email));
+        Thread thread = new Thread(new SendMailThread(domain, "activation", emailFrom, javaMailSender, templateEngine, activationUrl, email));
+        thread.start();
+    }
+
+    public void sendMailForBugs(String info){
+        Thread thread = new Thread(new SendMailThread(domain,"bugs", emailFrom, javaMailSender, templateEngine, info, bugEmail));
         thread.start();
     }
 

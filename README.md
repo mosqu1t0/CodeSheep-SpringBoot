@@ -85,6 +85,7 @@ Emm, login api
 it needs <b>two params</b>:
 - email
 - password
+- remember
 
 <b>return</b> the results of login account.
 

@@ -8,15 +8,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
+
 @Service
 @Slf4j
 public class CodeService {
+
+    @Resource
+    DealCodeResponder dealCodeResponder;
     static String codeWorkPath;
     @Value("${codeWork.path}")
     public void setCodeWorkPath(String codeWorkPath) {
@@ -90,16 +95,16 @@ public class CodeService {
 
                 //dangerous wrong
                 if (err.equals("killWrong\n")){
-                    return DealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, null);
+                    return dealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, null);
                 }
 
-                return DealCodeResponder.dealWrong(id, err, comCode, comRes, comErr);
+                return dealCodeResponder.dealWrong(id, err, comCode, comRes, comErr);
 
             }
 
             //other languages run success
             if (!Lang.equals("cpp") && !Lang.equals("go")){
-                return DealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, null);
+                return dealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, null);
             }
             //c or go compile success start to run
             if (Lang.equals("cpp")) command = "runCpp.sh";
@@ -111,7 +116,7 @@ public class CodeService {
             //kill the pid, avoid something bad happen
             if (!processSub.isAlive()) processSub.destroy();
 
-            return DealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, comExe);
+            return dealCodeResponder.dealRight(id, comCode, comRes, comInfo, comErr, comExe);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

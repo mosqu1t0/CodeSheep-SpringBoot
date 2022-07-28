@@ -1,6 +1,6 @@
 package com.mosquito.codesheep.thread;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
@@ -10,17 +10,27 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
-@AllArgsConstructor
 public class SendMailThread implements Runnable{
 
-    private String emailType;
-    private String mailUserName;
-    private JavaMailSender javaMailSender;
-    private TemplateEngine templateEngine;
+    private final String emailType;
+    private final String mailUserName;
+    private final JavaMailSender javaMailSender;
+    private final TemplateEngine templateEngine;
+    private final String keyMsg;
+    private final String emailAddress;
 
-    private String keyMsg;
-    private String emailAddress;
 
+    private final String domain;
+
+    public SendMailThread(String domain, String emailType, String mailUserName, JavaMailSender javaMailSender, TemplateEngine templateEngine, String keyMsg, String emailAddress) {
+        this.domain = domain;
+        this.emailType = emailType;
+        this.mailUserName = mailUserName;
+        this.javaMailSender = javaMailSender;
+        this.templateEngine = templateEngine;
+        this.keyMsg = keyMsg;
+        this.emailAddress = emailAddress;
+    }
 
     @Override
     public void run() {
@@ -28,21 +38,23 @@ public class SendMailThread implements Runnable{
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMailMessage, true);
             String templateName;
+            Context context = new Context();
             if (emailType.equals("activation")){
                 message.setSubject("(๑•̀ㅁ•́ฅ✧ Here is Code Sheep Account Activation Mail!");
                 templateName = "activate-account.html";
+                String url = "http://"+domain+"/user?confirmCode=" + keyMsg;
+                context.setVariable("key", url);
+                context.setVariable("email", emailAddress);
             } else {
                 message.setSubject("Oops, Code Sheep Error Happen!");
                 templateName = "debug.html";
+                context.setVariable("bugInfo", keyMsg);
             }
 
             message.setFrom(mailUserName);
             message.setTo(emailAddress);
             message.setSentDate(new Date());
 
-            Context context = new Context();
-            String url = "http://localhost:8080/user?confirmCode=" + keyMsg;
-            context.setVariable("key", url);
             String text = templateEngine.process(templateName, context);
             message.setText(text, true);
 
