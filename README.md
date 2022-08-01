@@ -19,7 +19,7 @@ it needs <b>three params</b>:
 - code(just codes)
 - input(the args of program)
 
-this api <b>return</b> the results of running code.
+it <b>return</b> the results of running code.
 
 example:
 ```json
@@ -47,11 +47,11 @@ example:
 - `Nop` --> `244`
 - `出问题了，快联系管理员` --> `555`
 #### res
-the output of your run codes
+the output of your running code.
 
 ### POST: `/code`
 
-this api use to save the code to database.
+it is used to save the code on database.
 
 it needs <b>three params</b>:
 - language(language)
@@ -65,7 +65,7 @@ and <b>one cookie</b>
 
 
 
-this api <b>return</b> the results of save code
+it <b>return</b> the results of save code
 
 example:
 ```json
@@ -90,7 +90,7 @@ example:
 
 ### DELETE: `/code`
 
-delete a code you have saved
+delete a code file you have saved
 
 needs <b>two params:</b>
 - fileName
@@ -99,7 +99,7 @@ needs <b>two params:</b>
 needs <b>one cookie:</b>
 - token: `xx.xxx.xx`
 
-return the resulte of delete code.
+return the results of delete code.
 
 <b>example:</b>
 
@@ -123,7 +123,7 @@ return the resulte of delete code.
 
 ### GET: `/code`
 
-get all codes this account have save
+get all codes of this account
 
 needs <b>two params:</b>
 - pageNum
@@ -134,7 +134,7 @@ needs <b>two params:</b>
 needs <b>one cookie</b>
 - token: `xx.xxx.xx`
 
-return the list of codes and some page info
+return the list of codes and some page infos
 
 <b>example:</b>
 
@@ -168,7 +168,7 @@ return the list of codes and some page info
 
 ### POST: `/user`
 
-Obviously, this api is for registering account.
+Obviously, this is for registering account.
 
 it needs <b>two params</b>:
 - email
@@ -190,7 +190,7 @@ example:
 - `244`
   > the email has been registered.
 - `400`
-  > Register failure please contact me
+  > Register fail, please contact me
 
 #### msg
 - `注册成功啦，快去邮箱激活帐号吧!` --> `200`
@@ -236,7 +236,7 @@ example:
 Activate account api.
 
 
-it only needs <b>one param</b>:
+needs <b>one param</b>:
 
 example:
 ```url
