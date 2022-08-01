@@ -19,7 +19,7 @@ it needs <b>three params</b>:
 - code(just codes)
 - input(the args of program)
 
-this api <b>return</b> the results of run codes
+this api <b>return</b> the results of running code.
 
 example:
 ```json
