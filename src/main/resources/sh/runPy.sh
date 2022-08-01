@@ -13,7 +13,7 @@ then
         kill -9 `ps -ef | grep Py$2 | grep -v grep | awk -F ' ' '{print $2}'`
 
         if [ $? -ne 0 ]; then
-            echo "Help, it can't stop !!!!!" >> "Py$2.err"
+            echo "killWrong" >> "Py$2.err"
         fi
         echo -e "...\n\nOver Time" >> Py$2.info
     fi

@@ -1,5 +1,6 @@
 package com.mosquito.codesheep.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mosquito.codesheep.pojo.User;
 import com.mosquito.codesheep.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,12 @@ public class UserController {
 
     @PostMapping("/user-login")
     @ResponseBody
-    Map<String, Object> handleLogin(@RequestBody User user, HttpServletResponse response) {
-        System.out.println(user.getRemember());
-        return userService.loginAccount(user, user.getRemember(), response);
+    Map<String, Object> handleLogin(@RequestBody Map<String, Object> map, HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.convertValue(map.get("user"), User.class);
+        boolean remember = (boolean) map.get("remember");
+
+        return userService.loginAccount(user, remember, response);
     }
 
     @GetMapping("/user")

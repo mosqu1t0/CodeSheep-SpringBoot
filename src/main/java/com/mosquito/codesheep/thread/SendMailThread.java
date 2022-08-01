@@ -1,6 +1,6 @@
 package com.mosquito.codesheep.thread;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
@@ -10,8 +10,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
+@AllArgsConstructor
 public class SendMailThread implements Runnable{
 
+    private final String domain;
     private final String emailType;
     private final String mailUserName;
     private final JavaMailSender javaMailSender;
@@ -20,17 +22,6 @@ public class SendMailThread implements Runnable{
     private final String emailAddress;
 
 
-    private final String domain;
-
-    public SendMailThread(String domain, String emailType, String mailUserName, JavaMailSender javaMailSender, TemplateEngine templateEngine, String keyMsg, String emailAddress) {
-        this.domain = domain;
-        this.emailType = emailType;
-        this.mailUserName = mailUserName;
-        this.javaMailSender = javaMailSender;
-        this.templateEngine = templateEngine;
-        this.keyMsg = keyMsg;
-        this.emailAddress = emailAddress;
-    }
 
     @Override
     public void run() {

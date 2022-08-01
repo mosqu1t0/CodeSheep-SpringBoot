@@ -105,7 +105,6 @@ public class UserService {
             if (remember) cookie.setMaxAge(604800);
             else cookie.setMaxAge(86400);
             cookie.setPath("/");
-//            cookie.setPath("/code");
 
             response.addCookie(cookie);
         } else {

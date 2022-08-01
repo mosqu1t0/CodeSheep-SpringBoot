@@ -1,7 +1,7 @@
 package com.mosquito.codesheep.utils;
 
 import com.mosquito.codesheep.service.EmailService;
-import com.mosquito.codesheep.thread.DeleteCodeThread;
+import com.mosquito.codesheep.thread.CleanCodeThread;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ public class DealCodeResponder {
         resultMap.put("res", err);
         resultMap.put("msg", nopMsg);
         // creat a thread do delete work
-        Thread thread = new Thread(new DeleteCodeThread(comCode, comRes, null, comErr, null, id));
+        Thread thread = new Thread(new CleanCodeThread(comCode, comRes, null, comErr, null, id));
         thread.start();
 
         return resultMap;
@@ -54,6 +54,7 @@ public class DealCodeResponder {
                 resultMap.put("code", 555);
                 resultMap.put("res", content);
                 resultMap.put("msg", wrongMsg);
+                //keep wrong code
                 comCode = null;
 
                 log.error("Can't kill the programm from {}", id);
@@ -71,7 +72,7 @@ public class DealCodeResponder {
             resultMap.put("msg", goodMsg);
         }
 
-        Thread thread = new Thread(new DeleteCodeThread(comCode, comRes, comInfo, comErr, comExe, id));
+        Thread thread = new Thread(new CleanCodeThread(comCode, comRes, comInfo, comErr, comExe, id));
         thread.start();
         return resultMap;
     }

@@ -14,7 +14,7 @@ import java.io.*;
 public class DoBeforeServe {
     static String CodeWorkPath;
 
-    @Value("${codeWork.path}")
+    @Value("${code.workPath}")
     public void setCodeWorkPath(String codeWorkPath) {
         CodeWorkPath = codeWorkPath;
     }

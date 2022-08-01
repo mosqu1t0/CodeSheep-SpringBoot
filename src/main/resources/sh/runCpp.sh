@@ -14,7 +14,7 @@ then
         kill -9 `ps -ef | grep Cpp$2 | grep -v grep | awk -F ' ' '{print $2}'`
 
         if [ $? -ne 0 ]; then
-            echo "Help, it can't stop !!!!!" >> Cpp$2.err
+            echo "killWrong" >> Cpp$2.err
         fi
         echo -e "...\n\nOver Time" >> Cpp$2.info
     fi

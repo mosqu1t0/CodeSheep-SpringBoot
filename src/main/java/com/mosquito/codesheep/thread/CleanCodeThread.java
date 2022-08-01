@@ -1,14 +1,14 @@
 package com.mosquito.codesheep.thread;
 
-import com.mosquito.codesheep.service.EmailService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+@AllArgsConstructor
 @Slf4j
-public class DeleteCodeThread implements Runnable{
+public class CleanCodeThread implements Runnable{
 
     private final File comCode;
     private final File comRes;
@@ -18,19 +18,11 @@ public class DeleteCodeThread implements Runnable{
     private final File comExe;
 
     private final String id;
-    private final Set<Object> wrongSet = new HashSet<>();
-
-    public DeleteCodeThread(File comCode, File comRes, File comInfo, File comErr, File comExe, String id) {
-        this.comCode = comCode;
-        this.comRes = comRes;
-        this.comInfo = comInfo;
-        this.comErr = comErr;
-        this.comExe = comExe;
-        this.id = id;
-    }
 
     @Override
     public void run() {
+        Set<Object> wrongSet = new HashSet<>();
+
         if (comCode != null && comCode.exists() && !comCode.delete()) wrongSet.add(comCode);
         if (comRes != null && comRes.exists() && !comRes.delete()) wrongSet.add(comRes);
         if (comInfo != null && comInfo.exists() && !comInfo.delete()) wrongSet.add(comInfo);
