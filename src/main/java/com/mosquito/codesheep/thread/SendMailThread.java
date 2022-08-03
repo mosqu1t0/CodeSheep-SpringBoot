@@ -33,7 +33,7 @@ public class SendMailThread implements Runnable{
             if (emailType.equals("activation")){
                 message.setSubject("(๑•̀ㅁ•́ฅ✧ Here is Code Sheep Account Activation Mail!");
                 templateName = "activate-account.html";
-                String url = "http://"+domain+"/user?confirmCode=" + keyMsg;
+                String url = domain+"/user/" + keyMsg;
                 context.setVariable("key", url);
                 context.setVariable("email", emailAddress);
             } else {

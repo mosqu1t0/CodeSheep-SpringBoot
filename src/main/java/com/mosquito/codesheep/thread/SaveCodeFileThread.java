@@ -2,6 +2,7 @@ package com.mosquito.codesheep.thread;
 
 import cn.hutool.core.io.file.FileWriter;
 import com.mosquito.codesheep.pojo.Code;
+import com.mosquito.codesheep.utils.languageMapUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,21 +18,7 @@ public class SaveCodeFileThread implements Runnable{
 
     @Override
     public void run() {
-        String suffix = "";
-        switch (code.getLanguage()){
-            case "cpp":
-                suffix = ".cpp";
-                break;
-            case "go":
-                suffix = ".go";
-                break;
-            case "python":
-                suffix = ".py";
-                break;
-            case "javascript":
-                suffix = ".js";
-                break;
-        }
+        String suffix = languageMapUtil.getSuffix(code.getLanguage());
         File path = new File(savePath + email + '/');
         if (!path.exists() && !path.mkdir()) {
             log.error("can't creat saveCode path.");

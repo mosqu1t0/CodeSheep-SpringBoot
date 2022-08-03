@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class DealCodeResponder {
+public class DealCodeResponderUtil {
 
     static final String goodMsg = "Good! ฅ^•ﻌ•^ฅ";
     static final String nopMsg = "Nop （´(ｪ)｀）";
@@ -26,24 +26,24 @@ public class DealCodeResponder {
     @Resource
     EmailService emailService;
 
-    public Map<String, Object> dealWrong(String id, String err, File comCode, File comRes, File comErr){
+    public Map<String, Object> dealWrong(String id, String err, File comCode, File comOut, File comErr){
         //grammar wrong
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("code", 244);
         resultMap.put("res", err);
         resultMap.put("msg", nopMsg);
         // creat a thread do delete work
-        Thread thread = new Thread(new CleanCodeThread(comCode, comRes, null, comErr, null, id));
+        Thread thread = new Thread(new CleanCodeThread(comCode, comOut, null, comErr, null, id));
         thread.start();
 
         return resultMap;
     }
-    public Map<String, Object> dealRight(String id, File comCode, File comRes, File comInfo, File comErr, File comExe) throws IOException {
+    public Map<String, Object> dealRight(String id, File comCode, File comOut, File comInfo, File comErr, File comExe) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
 
         String content = "";
-        if (comRes.exists() && comRes.length() > 0) {
-            content = new String(Files.readAllBytes(Paths.get(comRes.getPath())));
+        if (comOut.exists() && comOut.length() > 0) {
+            content = new String(Files.readAllBytes(Paths.get(comOut.getPath())));
             if (content.length() > lengthOfOutput) content = content.substring(0, lengthOfOutput);
         }
         if (comInfo.exists() && comInfo.length() > 0) {
@@ -72,7 +72,7 @@ public class DealCodeResponder {
             resultMap.put("msg", goodMsg);
         }
 
-        Thread thread = new Thread(new CleanCodeThread(comCode, comRes, comInfo, comErr, comExe, id));
+        Thread thread = new Thread(new CleanCodeThread(comCode, comOut, comInfo, comErr, comExe, id));
         thread.start();
         return resultMap;
     }

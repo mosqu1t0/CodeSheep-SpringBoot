@@ -2,10 +2,7 @@ package com.mosquito.codesheep.mapper;
 
 import com.github.pagehelper.Page;
 import com.mosquito.codesheep.pojo.Code;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,5 +21,8 @@ public interface CodeMapper {
 
     @Delete("DELETE FROM code WHERE email = #{email} AND file_name = #{code.fileName} AND language = #{code.language}")
     int DeleteCode(Code code, String email);
+
+    @Update("UPDATE code SET time = #{code.time} WHERE email = #{email} AND file_name = #{code.fileName} AND language = #{code.language}")
+    int UpdateCodeTime(Code code, String email);
 
 }

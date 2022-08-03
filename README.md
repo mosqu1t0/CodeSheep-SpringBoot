@@ -88,13 +88,18 @@ example:
 - `文件已经存在了，换个名字吧` --> `300`
 - `保存失败，请联系管理员` --> `400`
 
-### DELETE: `/code`
+### DELETE: `/code/{language}/{fileName}`
 
 delete a code file you have saved
 
 needs <b>two params:</b>
 - fileName
 - language
+
+<b>example:</b>
+```http request
+/code/cpp/123
+```
 
 needs <b>one cookie:</b>
 - token: `xx.xxx.xx`
@@ -121,20 +126,61 @@ return the results of delete code.
 - `删除失败,请联系管理员` --> `400`
 
 
-### GET: `/code`
+### GET: `/code/{language}/{fileName}`
+
+as it say, get a code content
+
+needs <b>two params:</b>
+- language
+- fileName
+
+<b>example:</b>
+```http request
+/code/cpp/hello
+```
+
+return code content
+
+<b>example:</b>
+
+```json
+{
+  "code": 200,
+  "msg": "打开成功",
+  "content": "print(\"hello\");"
+}
+```
+
+#### code
+- 200
+  > succeed to get code content.
+- 400
+  > can't find the code
+
+#### msg
+- `打开成功` --> `200`
+- `没有找到代码` --> `400`
+
+#### content
+only if `code` equal `200`, the content is returned
+
+
+### GET: `/codes/{pageSize}/{pageNum}`
 
 get all codes of this account
 
-needs <b>two params:</b>
-- pageNum
-  > which page list you want to get(default 1) 
-- pageSize
-  > how many items compose to one page(default 5)
+
+<b>example:</b>
+```http request
+/codes/5/1
+```
 
 needs <b>one cookie</b>
 - token: `xx.xxx.xx`
 
-return the list of codes and some page infos
+
+
+return the <b>list of codes</b> and some <b>page infos</b>
 
 <b>example:</b>
 
@@ -231,7 +277,7 @@ example:
 - `账户不存在或者未激活` --> `404`
 - `账户异常，请联系管理员处理` --> `405`
 
-### Get: /user
+### Get: /user/{confirmCode}
 
 Activate account api.
 
@@ -239,6 +285,6 @@ Activate account api.
 needs <b>one param</b>:
 
 example:
-```url
-/user?confirmCode=xxxxxx
+```http request
+/user/123456
 ```

@@ -11,7 +11,7 @@ import java.io.*;
 
 @Component
 @Slf4j
-public class DoBeforeServe {
+public class DoBeforeServeUtil {
     static String CodeWorkPath;
 
     @Value("${code.workPath}")

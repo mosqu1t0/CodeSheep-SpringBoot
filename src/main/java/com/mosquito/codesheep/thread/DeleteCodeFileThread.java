@@ -1,6 +1,7 @@
 package com.mosquito.codesheep.thread;
 
 import com.mosquito.codesheep.pojo.Code;
+import com.mosquito.codesheep.utils.languageMapUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,21 +15,7 @@ public class DeleteCodeFileThread implements Runnable {
     private String savePath;
     @Override
     public void run() {
-        String suffix = "";
-        switch (code.getLanguage()){
-            case "cpp":
-                suffix = ".cpp";
-                break;
-            case "go":
-                suffix = ".go";
-                break;
-            case "python":
-                suffix = ".py";
-                break;
-            case "javascript":
-                suffix = ".js";
-                break;
-        }
+        String suffix = languageMapUtil.getSuffix(code.getLanguage());
 
         File file = new File(savePath + email + '/' + code.getFileName() + suffix);
 

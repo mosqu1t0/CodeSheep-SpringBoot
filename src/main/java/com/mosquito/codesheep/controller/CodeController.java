@@ -30,20 +30,35 @@ public class CodeController {
         return codeService.saveCode(code, email);
     }
 
-    @DeleteMapping("/code")
+    @DeleteMapping("/code/{language}/{fileName}")
     Map<String, Object> handleDeleteCode(
-            @RequestParam String fileName,
-            @RequestParam String language ,
+            @PathVariable String fileName,
+            @PathVariable String language ,
             HttpServletRequest request
     ){
         return codeService.deleteCode(new Code(language, null, null, fileName, null),
                 (String) request.getAttribute("email"));
     }
 
-    @GetMapping("/code")
-    PageInfo<Code> handleGetCode(
-            @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize,
+    @PutMapping("/code")
+    Map<String, Object> handleUpdateCode(@RequestBody Code code, HttpServletRequest request){
+        return codeService.UpdateCode(code, (String) request.getAttribute("email"));
+    }
+
+    @GetMapping("/code/{language}/{fileName}")
+    Map<String, Object> handleOpenCode(
+            @PathVariable String language,
+            @PathVariable String fileName,
+            HttpServletRequest request
+    ){
+        return codeService.getCode(new Code(language, null, null, fileName, null),
+                (String) request.getAttribute("email"));
+    }
+
+    @GetMapping("/codes/{pageSize}/{pageNum}")
+    PageInfo<Code> handleGetCodes(
+            @PathVariable Integer pageSize,
+            @PathVariable Integer pageNum,
             HttpServletRequest request
     ){
         PageHelper.startPage(pageNum, pageSize);

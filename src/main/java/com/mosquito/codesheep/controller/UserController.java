@@ -31,8 +31,8 @@ public class UserController {
         return userService.loginAccount(user, remember, response);
     }
 
-    @GetMapping("/user")
-    String handleActivation(@RequestParam String confirmCode){
+    @GetMapping("/user/{confirmCode}")
+    String handleActivation(@PathVariable String confirmCode){
         int judge = userService.activateAccount(confirmCode);
         if (judge == 1) return "success";
         if (judge == 3) return "overtime";
