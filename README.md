@@ -6,7 +6,7 @@ Btw, i hate java.
 
 
 
-# TEMP API-DESIGH
+# TEMP API-DESIGN
 ## Code Service
 ### POST: `/code-run`
 emm, it is for running code.
