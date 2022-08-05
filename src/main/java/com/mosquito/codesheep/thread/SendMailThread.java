@@ -35,7 +35,7 @@ public class SendMailThread implements Runnable{
                 templateName = "activate-account.html";
                 String url = domain+"/user/" + keyMsg;
                 context.setVariable("key", url);
-                context.setVariable("email", emailAddress);
+                context.setVariable("email", "你好啊，"+emailAddress);
             } else {
                 message.setSubject("Oops, Code Sheep Error Happen!");
                 templateName = "debug.html";

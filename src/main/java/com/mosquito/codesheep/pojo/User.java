@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private Integer id;
     private String email;
     private String password;
     private String salt;
     private String confirmCode;
     private LocalDateTime activationTime; //失效时间
     private Byte isVaild;
+    private String config;
 }

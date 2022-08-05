@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -56,12 +57,12 @@ public class UserService {
         int result = userMapper.InsertUser(user);
 
         if (result > 0){
-            resultMap.put("code", "200");
+            resultMap.put("code", 200);
             resultMap.put("msg", "注册成功啦，快去邮箱激活帐号吧! Y(･∀･)Y");
 
             emailService.sendMailForActivationAccount(confirmCode, user.getEmail());
         } else {
-            resultMap.put("code", "400");
+            resultMap.put("code", 400);
             resultMap.put("msg", "由于很神奇的原因，注册失败了 ∑(￣□￣)");
         }
 
@@ -89,12 +90,18 @@ public class UserService {
 
             return resultMap;
         }
+
         User queryUser = queryUsers.get(0);
         String md5Passwd = SecureUtil.md5(user.getPassword() + queryUser.getSalt());
 
         if (queryUser.getPassword().equals(md5Passwd)){
             resultMap.put("code", 200);
             resultMap.put("msg", "登录成功! Y(･∀･)Y");
+
+            String config = queryUser.getConfig();
+            if (config != null && !config.equals("")){
+                resultMap.put("config", config);
+            }
 
             String token = JWT.create()
                     .setPayload("email", queryUser.getEmail())
@@ -115,16 +122,47 @@ public class UserService {
         return resultMap;
     }
 
-    public int activateAccount(String confirmCode){
+    public Map<String, Object> uploadConfig(String config, String email){
+        int judge = userMapper.UpdateUserConfigByEmail(config, email);
+        System.out.println(config + " " + email);
+        Map<String, Object> resultMap = new HashMap<>();
+        if (judge == 1){
+            resultMap.put("code", 200);
+            resultMap.put("msg", "保存成功 (・∀・)");
+        } else {
+            resultMap.put("code", 400);
+            resultMap.put("msg", "保存失败 (´･д･｀)");
+        }
+        return resultMap;
+    }
+
+    public void activateAccount(String confirmCode, HttpServletRequest request){
         User queryUser = userMapper.SelectUserByConfirmCode(confirmCode);
 
-        if (queryUser == null) return 0;
-
-        if (LocalDateTime.now().isBefore(queryUser.getActivationTime())){
-            return userMapper.UpdataUserByConfirmCode(confirmCode);
+        if (queryUser == null){
+            request.setAttribute("title", "Activate Error");
+            request.setAttribute("h1", "激活失败（´(ｪ)｀）");
+            request.setAttribute("color", "#ba000d");
+            request.setAttribute("info", "请不要重复激活，点击链接跳转");
+        } else if (LocalDateTime.now().isBefore(queryUser.getActivationTime())){
+            int judge = userMapper.UpdateUserByConfirmCode(confirmCode);
+            if (judge == 1){
+                request.setAttribute("title", "Activate Success");
+                request.setAttribute("h1", "激活成功啦！(・∀・)");
+                request.setAttribute("color", "#2da44e");
+                request.setAttribute("info", "激活已成功，点击链接跳转");
+            } else {
+                request.setAttribute("title", "Activate Error");
+                request.setAttribute("h1", "激活失败... (´･д･｀)");
+                request.setAttribute("color", "#ba000d");
+                request.setAttribute("info", "激活失败，发生了奇怪的事情, 点击链接跳转");
+            }
+        } else {
+            request.setAttribute("title", "Activate OverTime");
+            request.setAttribute("h1", "激活超时啦！(´･д･｀)");
+            request.setAttribute("color", "#ffb64b");
+            request.setAttribute("info", "激活码已过期，点击链接跳转");
         }
-
-        return 3;
     }
 
 }

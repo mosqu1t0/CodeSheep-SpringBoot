@@ -50,7 +50,7 @@ public class CodeService {
         String runArgs = code.getInput();
         String codePath = languageMapUtil.getPath(Lang);
         String suffix = languageMapUtil.getSuffix(Lang);
-        String command = languageMapUtil.getCommandOneStep(Lang);
+        String command = languageMapUtil.getCommand(Lang);
 
         File comPath = new File(codeWorkPath);
         File comCode = new File(codeWorkPath + codePath + id + suffix);
@@ -98,11 +98,11 @@ public class CodeService {
             }
 
             //script languages run success
-            if (!Lang.equals("cpp") && !Lang.equals("go")){
+            if (!languageMapUtil.secondCommand.containsKey(Lang)){
                 return dealCodeResponderUtil.dealRight(id, comCode, comOut, comInfo, comErr, null);
             }
             //c or go compile success start to run
-            command = languageMapUtil.getCommandTwoStep(Lang);
+            command = languageMapUtil.getSecondCommand(Lang);
             cmdarray = new String[]{"./" + command, runArgs, id};
             Process processSub = Runtime.getRuntime().exec(cmdarray, null, comPath);
             processSub.waitFor();

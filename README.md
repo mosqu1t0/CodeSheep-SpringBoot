@@ -5,7 +5,7 @@ Btw, i hate java.
 
 
 
-
+[TOC]
 
 # TEMP API-DESIGH
 
@@ -124,6 +124,18 @@ return the results of delete code.
 #### msg
 - `删除成功!` --> `200`
 - `删除失败,请联系管理员` --> `400`
+
+
+### PUT: `/code`
+
+update the code you have saved.
+
+needs <b>two params:</b>
+- language
+- fileName
+- code
+
+needs <b>one cookie:</b>
 
 
 ### GET: `/code/{language}/{fileName}`
@@ -254,12 +266,25 @@ it needs <b>two params</b>:
 <b>return</b> the results of login account.
 
 example:
+
 ```json
 {
   "code": 200,
-  "msg": "登录成功!"
+  "msg": "登录成功!",
+  "config": "{xxx}"
 }
 ```
+
+it also returns <b>a cookie</b>
+
+```json
+{
+  "token": "xx.xxx.xx"
+}
+```
+
+most of Code Services need the cookie, or the request will be blocked
+
 
 #### code
 - `200`
@@ -277,7 +302,48 @@ example:
 - `账户不存在或者未激活` --> `404`
 - `账户异常，请联系管理员处理` --> `405`
 
-### Get: /user/{confirmCode}
+#### config
+
+if the account have not saved the config.
+
+it wouldn't be returned.
+
+
+### PUT: `/user/config`
+
+upload user's config
+
+needs <b>one params:</b>
+- config(json)
+
+needs <b>one cookie:</b>
+- token: `xxx.xxx.xxx`
+
+return <b>the result</b> of upload config
+
+<b>example:</b>
+
+```json
+{
+  "code": 200,
+  "msg": "保存成功"
+}
+```
+
+#### code
+- 200
+  > success
+- 400
+  > failure
+
+#### msg
+- `保存成功` --> `200`
+- `保存失败` --> `400`
+
+
+
+ 
+### Get: `/user/{confirmCode}`
 
 Activate account api.
 

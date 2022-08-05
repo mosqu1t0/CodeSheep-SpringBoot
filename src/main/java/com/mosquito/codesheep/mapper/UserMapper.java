@@ -16,9 +16,13 @@ public interface UserMapper {
     User SelectUserByConfirmCode(@Param("confirmCode") String confirmCode);
 
     @Update("UPDATE user SET is_vaild = 1 WHERE confirm_code = #{confirmCode}")
-    int UpdataUserByConfirmCode(@Param("confirmCode") String confirmCode);
+    int UpdateUserByConfirmCode(@Param("confirmCode") String confirmCode);
 
-    @Select("SELECT email, password, salt FROM user WHERE email = #{email} AND is_vaild = 1")
+    @Update("UPDATE user SET config = #{config} WHERE email = #{email}")
+    int UpdateUserConfigByEmail(String config, String email);
+
+
+    @Select("SELECT email, password, salt, config FROM user WHERE email = #{email} AND is_vaild = 1")
     List<User> SelectUserByEmailAndVaild(@Param("email") String email);
 
     @Select("SELECT email, password, salt FROM user WHERE email = #{email}")

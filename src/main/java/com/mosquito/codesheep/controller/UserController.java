@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -31,11 +32,15 @@ public class UserController {
         return userService.loginAccount(user, remember, response);
     }
 
+    @PutMapping("/user/config")
+    @ResponseBody
+    Map<String, Object> handleUploadConfigs(@RequestBody String config, HttpServletRequest request){
+        return userService.uploadConfig(config, (String) request.getAttribute("email"));
+    }
+
     @GetMapping("/user/{confirmCode}")
-    String handleActivation(@PathVariable String confirmCode){
-        int judge = userService.activateAccount(confirmCode);
-        if (judge == 1) return "success";
-        if (judge == 3) return "overtime";
-        return "failure";
+    String handleActivation(@PathVariable String confirmCode, HttpServletRequest request){
+        userService.activateAccount(confirmCode, request);
+        return "active-info";
     }
 }
