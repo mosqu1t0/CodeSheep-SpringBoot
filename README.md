@@ -5,12 +5,9 @@ Btw, i hate java.
 
 
 
-[TOC]
 
 # TEMP API-DESIGH
-
 ## Code Service
-
 ### POST: `/code-run`
 emm, it is for running code.
 
@@ -122,8 +119,8 @@ return the results of delete code.
   > failure
 
 #### msg
-- `删除成功!` --> `200`
-- `删除失败,请联系管理员` --> `400`
+- `删除成功！` --> `200`
+- `删除失败，请联系管理员` --> `400`
 
 
 ### PUT: `/code`
@@ -238,7 +235,7 @@ example:
 ```json
 {
   "code": 200,
-  "msg": "注册成功啦，快去邮箱激活帐号吧!"
+  "msg": "注册成功啦，快去邮箱激活帐号吧！"
 }
 ```
 
@@ -251,7 +248,7 @@ example:
   > Register fail, please contact me
 
 #### msg
-- `注册成功啦，快去邮箱激活帐号吧!` --> `200`
+- `注册成功啦，快去邮箱激活帐号吧！` --> `200`
 - `该账户已经注册过了喔，如果未激活请到邮箱激活` --> `244`
 - `由于很神奇的原因，注册失败了` --> `400`
 
@@ -270,7 +267,7 @@ example:
 ```json
 {
   "code": 200,
-  "msg": "登录成功!",
+  "msg": "登录成功！",
   "config": "{xxx}"
 }
 ```
@@ -297,7 +294,7 @@ most of Code Services need the cookie, or the request will be blocked
   > the account have exceptional errors
 
 #### msg
-- `登录成功!` --> `200`
+- `登录成功！` --> `200`
 - `密码错误...` --> `244`
 - `账户不存在或者未激活` --> `404`
 - `账户异常，请联系管理员处理` --> `405`
@@ -342,7 +339,7 @@ return <b>the result</b> of upload config
 
 
 
- 
+
 ### Get: `/user/{confirmCode}`
 
 Activate account api.
