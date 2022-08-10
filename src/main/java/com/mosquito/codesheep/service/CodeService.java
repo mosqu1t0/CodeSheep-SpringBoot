@@ -13,6 +13,7 @@ import com.mosquito.codesheep.utils.DealCodeResponderUtil;
 import com.mosquito.codesheep.utils.languageMapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +34,8 @@ public class CodeService {
     DealCodeResponderUtil dealCodeResponderUtil;
     @Resource
     CodeMapper codeMapper;
+    @Resource
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
     static String codeWorkPath;
     static String codeSavePath;
     @Value("${code.workPath}")
@@ -70,11 +73,11 @@ public class CodeService {
 
              // other languages support
             String[] cmdarray;
-            if (!Lang.equals("cpp") &&  !Lang.equals("go")){
+            if (!languageMapUtil.secondCommand.containsKey(Lang)){
                 // compile with run
                 cmdarray = new String[]{"./" + command, runArgs, id};
             } else {
-                // compile c or go
+                // compile c or cpp
                 cmdarray = new String[]{"./" + command, id};
             }
 
@@ -82,7 +85,7 @@ public class CodeService {
             process.waitFor(); // wait for the pid is ending, and the exitvalue will be 1
 
             //kill the pid, avoid something bad happen
-            if (!process.isAlive()) process.destroy();
+//            if (!process.isAlive()) process.destroy();
 
             //compile error
             if (comErr.exists() && comErr.length() > 0) {
@@ -101,7 +104,7 @@ public class CodeService {
             if (!languageMapUtil.secondCommand.containsKey(Lang)){
                 return dealCodeResponderUtil.dealRight(id, comCode, comOut, comInfo, comErr, null);
             }
-            //c or go compile success start to run
+            //c or cpp compile success start to run
             command = languageMapUtil.getSecondCommand(Lang);
             cmdarray = new String[]{"./" + command, runArgs, id};
             Process processSub = Runtime.getRuntime().exec(cmdarray, null, comPath);
@@ -133,8 +136,7 @@ public class CodeService {
             resultMap.put("code", 200);
             resultMap.put("msg", "保存成功 (・∀・)");
 
-            Thread thread = new Thread(new SaveCodeFileThread(code, email, codeSavePath));
-            thread.start();
+            threadPoolTaskExecutor.execute(new SaveCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);
             resultMap.put("msg", "保存失败,请联系管理员 (´･д･｀)");
@@ -151,8 +153,7 @@ public class CodeService {
             resultMap.put("code", 200);
             resultMap.put("msg", "删除成功! (・∀・)");
 
-            Thread thread = new Thread(new DeleteCodeFileThread(code, email, codeSavePath));
-            thread.start();
+            threadPoolTaskExecutor.execute(new DeleteCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);
             resultMap.put("msg", "删除失败,请联系管理员 （´(ｪ)｀）");
@@ -192,8 +193,7 @@ public class CodeService {
             resultMap.put("code", 200);
             resultMap.put("msg", "保存成功 (・∀・)");
 
-            Thread thread = new Thread(new SaveCodeFileThread(code, email, codeSavePath));
-            thread.start();
+            threadPoolTaskExecutor.execute(new SaveCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);
             resultMap.put("msg", "更新失败,请联系管理员 （´(ｪ)｀）");

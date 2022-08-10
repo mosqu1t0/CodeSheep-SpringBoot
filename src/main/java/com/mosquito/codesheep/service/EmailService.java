@@ -3,6 +3,7 @@ package com.mosquito.codesheep.service;
 import com.mosquito.codesheep.thread.SendMailThread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
@@ -18,18 +19,18 @@ public class EmailService {
     @Value("${doMain}")
     private String domain;
     @Resource
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Resource
     private JavaMailSender javaMailSender;
     @Resource
     private TemplateEngine templateEngine;
 
     public void sendMailForActivationAccount(String activationUrl, String email){
-        Thread thread = new Thread(new SendMailThread(domain, "activation", emailFrom, javaMailSender, templateEngine, activationUrl, email));
-        thread.start();
+        threadPoolTaskExecutor.execute(new SendMailThread(domain, "activation", emailFrom, javaMailSender, templateEngine, activationUrl, email));
     }
 
     public void sendMailForBugs(String info){
-        Thread thread = new Thread(new SendMailThread(domain,"bugs", emailFrom, javaMailSender, templateEngine, info, bugEmail));
-        thread.start();
+        threadPoolTaskExecutor.execute(new SendMailThread(domain, "bugs", emailFrom, javaMailSender, templateEngine, info, bugEmail));
     }
 
 }

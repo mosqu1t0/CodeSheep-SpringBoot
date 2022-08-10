@@ -28,6 +28,7 @@ public class UserService {
     @Resource
     EmailService emailService;
 
+
     @Value("${jwt.key}")
     String jwtKey;
     public Map<String, Object> creatAccount(User user){

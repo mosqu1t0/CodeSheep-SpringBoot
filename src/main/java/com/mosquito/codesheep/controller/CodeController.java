@@ -64,5 +64,4 @@ public class CodeController {
         PageHelper.startPage(pageNum, pageSize);
         return codeService.getCodes((String) request.getAttribute("email")).toPageInfo();
     }
-
 }

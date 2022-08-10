@@ -10,7 +10,8 @@ public class CodeSheepApplication {
     public static void main(String[] args) {
         SpringApplication.run(CodeSheepApplication.class, args);
 
-         //autostart to copy sh to workPath
+
+        //autostart to copy sh to workPath
         DoBeforeServeUtil.addShToWorkPath();
     }
 

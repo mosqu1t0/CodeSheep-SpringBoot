@@ -3,6 +3,7 @@ package com.mosquito.codesheep.utils;
 import com.mosquito.codesheep.service.EmailService;
 import com.mosquito.codesheep.thread.CleanCodeThread;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,6 +26,8 @@ public class DealCodeResponderUtil {
 
     @Resource
     EmailService emailService;
+    @Resource
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     public Map<String, Object> dealWrong(String id, String err, File comCode, File comOut, File comErr){
         //grammar wrong
@@ -33,8 +36,8 @@ public class DealCodeResponderUtil {
         resultMap.put("res", err);
         resultMap.put("msg", nopMsg);
         // creat a thread do delete work
-        Thread thread = new Thread(new CleanCodeThread(comCode, comOut, null, comErr, null, id));
-        thread.start();
+
+        threadPoolTaskExecutor.execute(new CleanCodeThread(comCode, comOut, null, comErr, null, id));
 
         return resultMap;
     }
@@ -72,8 +75,7 @@ public class DealCodeResponderUtil {
             resultMap.put("msg", goodMsg);
         }
 
-        Thread thread = new Thread(new CleanCodeThread(comCode, comOut, comInfo, comErr, comExe, id));
-        thread.start();
+        threadPoolTaskExecutor.execute(new CleanCodeThread(comCode, comOut, comInfo, comErr, comExe, id));
         return resultMap;
     }
 }

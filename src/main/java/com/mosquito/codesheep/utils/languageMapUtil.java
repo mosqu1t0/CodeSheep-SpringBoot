@@ -12,20 +12,25 @@ public class languageMapUtil {
     public static Map<String, String> path = new HashMap<>();
 
     static {
+        suffix.put("c", ".c");
         suffix.put("cpp", ".cpp");
-        suffix.put("go", ".go");
+        suffix.put("golang", ".go");
         suffix.put("python", ".py");
         suffix.put("javascript", ".js");
 
+        command.put("c", "compileC.sh");
         command.put("cpp", "compileCpp.sh");
+        command.put("golang", "compileGo.sh");
         command.put("python", "runPy.sh");
         command.put("javascript", "runJs.sh");
 
+        secondCommand.put("c", "runC.sh");
         secondCommand.put("cpp", "runCpp.sh");
-        secondCommand.put("go", "runGo.sh");
+        secondCommand.put("golang", "runGo.sh");
 
+        path.put("c", "C/C");
         path.put("cpp", "Cpp/Cpp");
-        path.put("go", "Go/Go");
+        path.put("golang", "Go/Go");
         path.put("python", "Py/Py");
         path.put("javascript", "Js/Js");
     }
