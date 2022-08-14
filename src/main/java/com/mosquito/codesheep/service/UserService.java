@@ -50,7 +50,7 @@ public class UserService {
 
         user.setConfirmCode(confirmCode);
         user.setSalt(salt);
-        user.setIsVaild((byte) 0);
+        user.setIsValid((byte) 0);
         user.setPassword(md5Passwd);
         user.setActivationTime(ldt);
 
@@ -73,7 +73,7 @@ public class UserService {
     public Map<String, Object> loginAccount(User user, boolean remember, HttpServletResponse response){
         Map<String, Object> resultMap = new HashMap<>();
 
-        List<User> queryUsers = userMapper.SelectUserByEmailAndVaild(user.getEmail());
+        List<User> queryUsers = userMapper.SelectUserByEmailAndValid(user.getEmail());
 
         if (queryUsers == null || queryUsers.isEmpty()) {
             resultMap.put("code", 404);
@@ -125,7 +125,6 @@ public class UserService {
 
     public Map<String, Object> uploadConfig(String config, String email){
         int judge = userMapper.UpdateUserConfigByEmail(config, email);
-        System.out.println(config + " " + email);
         Map<String, Object> resultMap = new HashMap<>();
         if (judge == 1){
             resultMap.put("code", 200);

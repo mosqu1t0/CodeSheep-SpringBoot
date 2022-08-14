@@ -1,7 +1,6 @@
 package com.mosquito.codesheep.controller;
 
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mosquito.codesheep.pojo.Code;
 import com.mosquito.codesheep.service.CodeService;
@@ -54,14 +53,15 @@ public class CodeController {
         return codeService.getCode(new Code(language, null, null, fileName, null),
                 (String) request.getAttribute("email"));
     }
-
     @GetMapping("/codes/{pageSize}/{pageNum}")
     PageInfo<Code> handleGetCodes(
             @PathVariable Integer pageSize,
             @PathVariable Integer pageNum,
+            @RequestParam String language,
+            @RequestParam String fileName,
             HttpServletRequest request
     ){
-        PageHelper.startPage(pageNum, pageSize);
-        return codeService.getCodes((String) request.getAttribute("email")).toPageInfo();
+        return codeService.getCodes(pageSize, pageNum, language, fileName,
+                (String) request.getAttribute("email")).toPageInfo();
     }
 }

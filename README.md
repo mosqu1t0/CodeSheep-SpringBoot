@@ -178,10 +178,15 @@ only if `code` equal `200`, the content is returned
 
 get all codes of this account
 
+In addition, it asks for <b>two more params</b> to filter codes.
+- language (the language of codes you want to find)
+- fileName (the filename of codes you want to find)
+
+> they can be empty, that means return all codes the account have. However, they are required necessarily.
 
 <b>example:</b>
-```http request
-/codes/5/1
+```url
+/codes/5/1?language=&&fileName=
 ```
 
 needs <b>one cookie</b>

@@ -15,6 +15,6 @@ public class User {
     private String salt;
     private String confirmCode;
     private LocalDateTime activationTime; //失效时间
-    private Byte isVaild;
+    private Byte isValid;
     private String config;
 }

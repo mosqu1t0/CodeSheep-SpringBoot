@@ -5,7 +5,9 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.crypto.SecureUtil;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mosquito.codesheep.mapper.CodeMapper;
+import com.mosquito.codesheep.mapper.UserMapper;
 import com.mosquito.codesheep.pojo.Code;
 import com.mosquito.codesheep.thread.DeleteCodeFileThread;
 import com.mosquito.codesheep.thread.SaveCodeFileThread;
@@ -34,6 +36,8 @@ public class CodeService {
     DealCodeResponderUtil dealCodeResponderUtil;
     @Resource
     CodeMapper codeMapper;
+    @Resource
+    UserMapper userMapper;
     @Resource
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
     static String codeWorkPath;
@@ -122,7 +126,8 @@ public class CodeService {
     public Map<String, Object> saveCode(Code code, String email){
         Map<String, Object> resultMap = new HashMap<>();
 
-        List<Code> codes = codeMapper.SelectUniqueCode(code, email);
+        Integer uid = userMapper.SelectUidByEmail(email);
+        List<Code> codes = codeMapper.SelectUniqueCode(code, uid);
         if (codes != null && codes.size() > 0){
             resultMap.put("code", 300);
             resultMap.put("msg", "文件已经存在了，换个名字吧 (´･д･｀)");
@@ -130,7 +135,7 @@ public class CodeService {
         }
 
         LocalDateTime ldt = LocalDateTime.now();
-        int judge = codeMapper.InsertCode(code, email, ldt);
+        int judge = codeMapper.InsertCode(code, uid, ldt);
 
         if (judge == 1){
             resultMap.put("code", 200);
@@ -146,7 +151,8 @@ public class CodeService {
     }
 
     public Map<String, Object> deleteCode(Code code, String email){
-        int judge = codeMapper.DeleteCode(code, email);
+        Integer uid = userMapper.SelectUidByEmail(email);
+        int judge = codeMapper.DeleteCode(code, uid);
 
         Map<String, Object> resultMap = new HashMap<>();
         if (judge == 1) {
@@ -162,12 +168,15 @@ public class CodeService {
         return resultMap;
     }
 
-    public Page<Code> getCodes(String email){
-        return codeMapper.SelectCodesPageByEmail(email);
+    public Page<Code> getCodes(Integer pageSize, Integer pageNum, String language, String fileName, String email){
+        Integer uid = userMapper.SelectUidByEmail(email);
+        PageHelper.startPage(pageNum, pageSize);
+        return codeMapper.SelectCodesPageByCondition(uid, language, fileName);
     }
 
     public Map<String, Object> getCode(Code code, String email){
-        List<Code> codes = codeMapper.SelectUniqueCode(code, email);
+        Integer uid = userMapper.SelectUidByEmail(email);
+        List<Code> codes = codeMapper.SelectUniqueCode(code, uid);
 
         Map<String, Object> resultMap = new HashMap<>();
         if (codes == null || codes.size() != 1){
@@ -186,7 +195,8 @@ public class CodeService {
     }
     public Map<String, Object> UpdateCode(Code code, String email){
         code.setTime(LocalDateTime.now());
-        int judge = codeMapper.UpdateCodeTime(code, email);
+        Integer uid = userMapper.SelectUidByEmail(email);
+        int judge = codeMapper.UpdateCodeTime(code, uid);
 
         Map<String, Object> resultMap = new HashMap<>();
         if (judge == 1){
