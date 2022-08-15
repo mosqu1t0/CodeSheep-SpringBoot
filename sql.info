@@ -1,0 +1,44 @@
+create table language
+(
+    lang_id int auto_increment
+        primary key,
+    name    varchar(125) not null,
+    constraint language_lang_id_uindex
+        unique (lang_id),
+    constraint language_name_uindex
+        unique (name)
+);
+
+
+
+create table user
+(
+    uid             int auto_increment comment '主键'
+        primary key,
+    email           varchar(125) not null,
+    password        varchar(125) null,
+    salt            char(6)      null,
+    activation_time datetime     null,
+    is_valid        tinyint(1)   null comment '0 不可用，　１　可用',
+    confirm_code    varchar(125) null,
+    config          text         null,
+    constraint user_email_uindex
+        unique (email)
+);
+
+
+create table code
+(
+    id        int auto_increment
+        primary key,
+    lang_id   int          not null,
+    file_name varchar(125) null,
+    time      datetime     null,
+    uid       int          not null,
+    constraint code_user_uid_fk
+        foreign key (uid) references user (uid)
+            on delete cascade
+);
+
+
+
