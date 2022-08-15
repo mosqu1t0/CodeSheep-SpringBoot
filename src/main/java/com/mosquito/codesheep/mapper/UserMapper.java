@@ -21,7 +21,6 @@ public interface UserMapper {
     @Update("UPDATE user SET config = #{config} WHERE email = #{email}")
     int UpdateUserConfigByEmail(String config, String email);
 
-
     @Select("SELECT email, password, salt, config FROM user WHERE email = #{email} AND is_valid = 1")
     List<User> SelectUserByEmailAndValid(String email);
 
@@ -31,4 +30,6 @@ public interface UserMapper {
     @Select("SELECT uid FROM user WHERE email = #{email}")
     Integer SelectUidByEmail(String  email);
 
+    @Delete("DELETE FROM user WHERE is_valid = 0 AND activation_time < NOW()")
+    Integer DeleteInactivatedAccounts();
 }
