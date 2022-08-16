@@ -89,7 +89,7 @@ public class CodeService {
             process.waitFor(); // wait for the pid is ending, and the exitvalue will be 1
 
             //kill the pid, avoid something bad happen
-//            if (!process.isAlive()) process.destroy();
+            if (!process.isAlive()) process.destroy();
 
             //compile error
             if (comErr.exists() && comErr.length() > 0) {
