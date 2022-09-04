@@ -31,6 +31,9 @@ public class UserService {
 
     @Value("${jwt.key}")
     String jwtKey;
+    @Value("${doMain}")
+    String domain;
+
     public Map<String, Object> creatAccount(User user){
         Map<String, Object> resultMap = new HashMap<>();
         List<User> queryUsers = userMapper.SelectUserByEmail(user.getEmail());
@@ -139,6 +142,7 @@ public class UserService {
     public void activateAccount(String confirmCode, HttpServletRequest request){
         User queryUser = userMapper.SelectUserByConfirmCode(confirmCode);
 
+        request.setAttribute("domain", domain + "/Login");
         if (queryUser == null){
             request.setAttribute("title", "Activate Error");
             request.setAttribute("h1", "激活失败（´(ｪ)｀）");

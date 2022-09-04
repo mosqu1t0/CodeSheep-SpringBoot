@@ -17,6 +17,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/user/config")
                 .addPathPatterns("/code/**")
+                .addPathPatterns("/koTime")
+                .addPathPatterns("/koTime/**")
                 .addPathPatterns("/codes/**");
     }
 }

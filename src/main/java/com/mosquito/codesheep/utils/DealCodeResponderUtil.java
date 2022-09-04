@@ -7,7 +7,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +24,7 @@ public class DealCodeResponderUtil {
     static final String nopMsg = "Nop （´(ｪ)｀）";
     static final String longMsg = "Long time error... (´･д･｀)";
     static final String wrongMsg = "出错啦，快联系管理员！ (´･д･｀)";
-    static final int lengthOfOutput = 1024 * 1024 * 12;
+    static final int lengthOfOutput = 1024 * 1024;
 
     @Resource
     EmailService emailService;
@@ -46,8 +48,21 @@ public class DealCodeResponderUtil {
 
         String content = "";
         if (comOut.exists() && comOut.length() > 0) {
-            content = new String(Files.readAllBytes(Paths.get(comOut.getPath())));
-            if (content.length() > lengthOfOutput) content = content.substring(0, lengthOfOutput);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(comOut));
+            int lenReal = (int) comOut.length();
+            char[] buf;
+            int read;
+            if (lenReal <= lengthOfOutput) {
+                buf = new char[lenReal];
+                read = bufferedReader.read(buf, 0, lenReal);
+            } else {
+                buf = new char[lengthOfOutput];
+                read = bufferedReader.read(buf, 0, lengthOfOutput);
+            }
+            if (read != 0) {
+                content = String.valueOf(buf);
+            }
+            bufferedReader.close();
         }
         if (comInfo.exists() && comInfo.length() > 0) {
             String info = new String(Files.readAllBytes(Paths.get(comInfo.getPath())));
