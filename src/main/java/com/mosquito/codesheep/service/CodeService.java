@@ -87,7 +87,6 @@ public class CodeService {
 
             Process process = Runtime.getRuntime().exec(cmdarray , null, comPath);
             process.waitFor(); // wait for the pid is ending, and the exitvalue will be 1
-
             //kill the pid, avoid something bad happen
             if (!process.isAlive()) process.destroy();
 

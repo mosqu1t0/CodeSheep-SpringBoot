@@ -3,6 +3,7 @@ package com.mosquito.codesheep.utils;
 import com.mosquito.codesheep.service.EmailService;
 import com.mosquito.codesheep.thread.CleanCodeThread;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,9 @@ public class DealCodeResponderUtil {
     static final String nopMsg = "Nop （´(ｪ)｀）";
     static final String longMsg = "Long time error... (´･д･｀)";
     static final String wrongMsg = "出错啦，快联系管理员！ (´･д･｀)";
-    static final int lengthOfOutput = 1024 * 1024;
 
+    @Value("${code.maxReadByte}")
+    private int lengthOfOutput;
     @Resource
     EmailService emailService;
     @Resource

@@ -2,7 +2,7 @@
 
 cd "Go/"
 
-echo $1 | ./Go$2.go 1> Go$2.out &
+echo $1 | ./Go$2 1> Go$2.out &
 
 if [ `ps -ef | grep Go$2 | grep -v grep | awk -F ' ' '{print $2}'` ]
 then

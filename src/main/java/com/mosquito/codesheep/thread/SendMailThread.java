@@ -37,7 +37,7 @@ public class SendMailThread implements Runnable{
                 context.setVariable("key", url);
                 context.setVariable("email", "你好啊，"+emailAddress);
             } else {
-                message.setSubject("Oops, Code Sheep Error Happen!");
+                message.setSubject("Oops, Code Sheep Error Happen In Java!");
                 templateName = "debug.html";
                 context.setVariable("bugInfo", keyMsg);
             }
