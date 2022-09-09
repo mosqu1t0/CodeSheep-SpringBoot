@@ -36,6 +36,7 @@ public class UserService {
 
     public Map<String, Object> creatAccount(User user){
         Map<String, Object> resultMap = new HashMap<>();
+        // check if there is an email registered.
         List<User> queryUsers = userMapper.SelectUserByEmail(user.getEmail());
 
         if (queryUsers != null && !queryUsers.isEmpty()){
@@ -76,6 +77,7 @@ public class UserService {
     public Map<String, Object> loginAccount(User user, boolean remember, HttpServletResponse response){
         Map<String, Object> resultMap = new HashMap<>();
 
+        // find the login account, it should be valid
         List<User> queryUsers = userMapper.SelectUserByEmailAndValid(user.getEmail());
 
         if (queryUsers == null || queryUsers.isEmpty()) {
@@ -83,7 +85,7 @@ public class UserService {
             resultMap.put("msg", "账户不存在或者未激活 （´(ｪ)｀）");
             return resultMap;
         }
-
+        // same email but many account, it mayn't happen, although
         if (queryUsers.size() > 1) {
             resultMap.put("code", 405);
             resultMap.put("msg", "账户异常，请停止登录，联系管理员处理 ∑(￣□￣)");
@@ -96,6 +98,7 @@ public class UserService {
         }
 
         User queryUser = queryUsers.get(0);
+        // get md5 passwd
         String md5Passwd = SecureUtil.md5(user.getPassword() + queryUser.getSalt());
 
         if (queryUser.getPassword().equals(md5Passwd)){
@@ -116,6 +119,7 @@ public class UserService {
             if (remember) cookie.setMaxAge(604800);
             else cookie.setMaxAge(86400);
             cookie.setPath("/");
+            cookie.setSecure(true);
 
             response.addCookie(cookie);
         } else {

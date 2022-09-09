@@ -125,7 +125,9 @@ public class CodeService {
     public Map<String, Object> saveCode(Code code, String email){
         Map<String, Object> resultMap = new HashMap<>();
 
+        // get user id
         Integer uid = userMapper.SelectUidByEmail(email);
+        // check if user have save the same name
         List<Code> codes = codeMapper.SelectUniqueCode(code, uid);
         if (codes != null && codes.size() > 0){
             resultMap.put("code", 300);
@@ -134,12 +136,14 @@ public class CodeService {
         }
 
         LocalDateTime ldt = LocalDateTime.now();
+        // insert a code field
         int judge = codeMapper.InsertCode(code, uid, ldt);
 
         if (judge == 1){
             resultMap.put("code", 200);
             resultMap.put("msg", "保存成功 (・∀・)");
 
+            // using thread to deal with the unnecessary io waiting time
             threadPoolTaskExecutor.execute(new SaveCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);
@@ -158,6 +162,7 @@ public class CodeService {
             resultMap.put("code", 200);
             resultMap.put("msg", "删除成功! (・∀・)");
 
+            // using thread to deal with the unnecessary io waiting time
             threadPoolTaskExecutor.execute(new DeleteCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);
@@ -168,12 +173,15 @@ public class CodeService {
     }
 
     public Page<Code> getCodes(Integer pageSize, Integer pageNum, String language, String fileName, String email){
+        // same, get user id by email
         Integer uid = userMapper.SelectUidByEmail(email);
+        // get pages div
         PageHelper.startPage(pageNum, pageSize);
         return codeMapper.SelectCodesPageByCondition(uid, language, fileName);
     }
 
     public Map<String, Object> getCode(Code code, String email){
+        // user id
         Integer uid = userMapper.SelectUidByEmail(email);
         List<Code> codes = codeMapper.SelectUniqueCode(code, uid);
 
@@ -182,6 +190,7 @@ public class CodeService {
             resultMap.put("code", "400");
             resultMap.put("msg", "没有找到代码 (´･д･｀)");
         } else {
+            // necessary sync io read code file
             String suffix = languageMapUtil.getSuffix(code.getLanguage());
             FileReader fileReader = new FileReader(codeSavePath + email + '/' + code.getFileName() + suffix);
             String codeContent = fileReader.readString();
@@ -193,6 +202,7 @@ public class CodeService {
         return resultMap;
     }
     public Map<String, Object> UpdateCode(Code code, String email){
+        // once updating a code,update the time firstly
         code.setTime(LocalDateTime.now());
         Integer uid = userMapper.SelectUidByEmail(email);
         int judge = codeMapper.UpdateCodeTime(code, uid);
@@ -202,6 +212,7 @@ public class CodeService {
             resultMap.put("code", 200);
             resultMap.put("msg", "保存成功 (・∀・)");
 
+            // use thread to update code file
             threadPoolTaskExecutor.execute(new SaveCodeFileThread(code, email, codeSavePath));
         } else {
             resultMap.put("code", 400);

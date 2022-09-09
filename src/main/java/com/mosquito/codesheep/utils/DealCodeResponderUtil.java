@@ -21,10 +21,10 @@ import java.util.Map;
 @Slf4j
 public class DealCodeResponderUtil {
 
-    static final String goodMsg = "Good! ฅ^•ﻌ•^ฅ";
-    static final String nopMsg = "Nop （´(ｪ)｀）";
-    static final String longMsg = "Long time error... (´･д･｀)";
-    static final String wrongMsg = "出错啦，快联系管理员！ (´･д･｀)";
+    final String goodMsg = "Good! ฅ^•ﻌ•^ฅ";
+    final String nopMsg = "Nop （´(ｪ)｀）";
+    final String longMsg = "Long time error... (´･д･｀)";
+    final String wrongMsg = "出错啦，快联系管理员！ (´･д･｀)";
 
     @Value("${code.maxReadByte}")
     private int lengthOfOutput;

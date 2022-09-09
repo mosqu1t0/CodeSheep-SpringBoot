@@ -25,10 +25,16 @@ public class EmailService {
     @Resource
     private TemplateEngine templateEngine;
 
+    /**
+     * send activation emails
+     */
     public void sendMailForActivationAccount(String activationUrl, String email){
         threadPoolTaskExecutor.execute(new SendMailThread(domain, "activation", emailFrom, javaMailSender, templateEngine, activationUrl, email));
     }
 
+    /**
+     * send bug email to admin
+     */
     public void sendMailForBugs(String info){
         threadPoolTaskExecutor.execute(new SendMailThread(domain, "bugs", emailFrom, javaMailSender, templateEngine, info, bugEmail));
     }
