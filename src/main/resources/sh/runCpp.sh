@@ -3,7 +3,7 @@
 
 cd "Cpp/"
 
-echo $1 | ./Cpp$2 &> Cpp$2.out & #进程实现真异步　哈哈
+echo "$1" | ./Cpp$2 &> Cpp$2.out & #进程实现真异步　哈哈
 
 if [ `ps -ef | grep Cpp$2 | grep -v grep | awk -F ' ' '{print $2}'` ]
 then

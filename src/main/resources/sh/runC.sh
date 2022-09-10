@@ -3,7 +3,7 @@
 
 cd "C/"
 
-echo $1 | ./C$2 &> C$2.out &
+echo "$1" | ./C$2 &> C$2.out &
 
 if [ `ps -ef | grep C$2 | grep -v grep | awk -F ' ' '{print $2}'` ]
 then

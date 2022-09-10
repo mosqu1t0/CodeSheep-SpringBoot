@@ -2,7 +2,7 @@
 
 cd "Js/"
 
-echo $1 | node Js$2.js 1> Js$2.out 2> Js$2.err &
+echo "$1" | node Js$2.js 1> Js$2.out 2> Js$2.err &
 
 if [ `ps -ef | grep Js$2 | grep -v grep | awk -F ' ' '{print $2}'` ]
 then
