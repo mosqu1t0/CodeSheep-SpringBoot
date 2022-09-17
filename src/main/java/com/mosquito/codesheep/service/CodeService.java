@@ -93,7 +93,7 @@ public class CodeService {
             //compile error
             if (comErr.exists() && comErr.length() > 0) {
                 String err = new String(Files.readAllBytes(Paths.get(comErr.getPath())));
-
+                err = err.replaceAll(id, "");
                 //dangerous wrong only script language could happen
                 if (err.equals("killWrong\n")){
                     return dealCodeResponderUtil.dealRight(id, comCode, comOut, comInfo, comErr, null);
